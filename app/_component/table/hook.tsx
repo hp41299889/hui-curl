@@ -1,4 +1,6 @@
+import { Delete, Edit } from "@mui/icons-material";
 import {
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -26,6 +28,7 @@ export const useActTable = <T extends { [key: string]: any }>(
               {metadata.map((m) => (
                 <TableCell key={`tableHead_${m.key}`}>{m.key}</TableCell>
               ))}
+              <TableCell>action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -37,6 +40,14 @@ export const useActTable = <T extends { [key: string]: any }>(
                       {m.custom ? m.custom(d) : d[m.key]}
                     </TableCell>
                   ))}
+                  <TableCell>
+                    <IconButton>
+                      <Edit />
+                    </IconButton>
+                    <IconButton>
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

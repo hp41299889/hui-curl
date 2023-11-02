@@ -4,16 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "prebuild": "pnpm db",
+    "build": "pnpm prebuild && next build",
     "start": "next start",
     "lint": "next lint",
     "db": "pnpm prisma generate",
-    "db-push:local": "dotenv -e .env.local -- pnpm prisma db push"
+    "db-push:local": "dotenv -e .env.local -- pnpm prisma db push",
+    "db-migrate:local": "dotenv -e .env.local -- pnpm prisma db migrate dev"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.15",
     "@prisma/client": "5.5.2",
     "axios": "^1.6.0",

@@ -11,6 +11,7 @@ import {
   styled,
   Grid,
 } from "@mui/material";
+import { Image as MuiImage } from "@mui/icons-material";
 import { Prisma } from "@prisma/client";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
@@ -52,12 +53,13 @@ const ProductForm = (props: Props) => {
   const [rows, setRows] = useState<Row[]>([{ index: 1, imgSrc: "" }]);
   const [detailOpen, setDetailOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<number>();
-  const { register, handleSubmit, getValues, control } =
+  const { register, handleSubmit, getValues, control, reset } =
     useForm<FormValues[]>();
 
   const onClose = () => {
     setOpen(false);
     setRows([{ index: 1, imgSrc: "" }]);
+    reset();
   };
 
   const onSubmit = async (formValues: any) => {
@@ -129,6 +131,7 @@ const ProductForm = (props: Props) => {
                   setDetailOpen(true);
                 }}
               >
+                {rows[i].imgSrc && <MuiImage />}
                 Detail
               </Button>
             </Stack>
