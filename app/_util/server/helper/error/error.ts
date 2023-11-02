@@ -1,3 +1,4 @@
+"use client";
 import { Errors } from "./interface";
 
 const createError = (message: string): Errors => {
