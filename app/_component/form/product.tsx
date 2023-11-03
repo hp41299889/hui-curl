@@ -5,19 +5,16 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Paper,
   Stack,
   TextField,
   styled,
-  Grid,
 } from "@mui/material";
 import { Image as MuiImage } from "@mui/icons-material";
-import { Prisma } from "@prisma/client";
-import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ProductDetailModal from "../modal/productDetail";
 import { postProduct } from "@/app/_util/client/api/back";
+import { Product } from "@prisma/client";
 
 interface Row {
   index: number;
@@ -34,6 +31,7 @@ export interface FormValues {
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
+  initValue?: Product;
 }
 
 const VisuallyHiddenInput = styled("input")({
@@ -49,7 +47,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const ProductForm = (props: Props) => {
-  const { open, setOpen } = props;
+  const { open, setOpen, initValue } = props;
   const [rows, setRows] = useState<Row[]>([{ index: 1, imgSrc: "" }]);
   const [detailOpen, setDetailOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<number>();
@@ -63,7 +61,6 @@ const ProductForm = (props: Props) => {
   };
 
   const onSubmit = async (formValues: any) => {
-    console.log(formValues);
     const formData = new FormData();
     Object.keys(formValues).forEach((i) => {
       formData.append(`product[${i}][name]`, formValues[i].name);
@@ -125,7 +122,7 @@ const ProductForm = (props: Props) => {
                   )}
                 />
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => {
                   setSelected(i);
                   setDetailOpen(true);
@@ -133,21 +130,23 @@ const ProductForm = (props: Props) => {
               >
                 {rows[i].imgSrc && <MuiImage />}
                 Detail
-              </Button>
+              </Button> */}
             </Stack>
           ))}
-          <Button
-            component="label"
-            variant="contained"
-            onClick={() =>
-              setRows((pre) => [
-                ...pre,
-                { index: pre[pre.length - 1].index, imgSrc: "" },
-              ])
-            }
-          >
-            + Add
-          </Button>
+          {!initValue && (
+            <Button
+              component="label"
+              variant="contained"
+              onClick={() =>
+                setRows((pre) => [
+                  ...pre,
+                  { index: pre[pre.length - 1].index, imgSrc: "" },
+                ])
+              }
+            >
+              + Add
+            </Button>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} variant="outlined">

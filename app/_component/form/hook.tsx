@@ -7,37 +7,48 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { Path, useForm } from "react-hook-form";
 
-export interface Field {
-  type: "input";
-  name: string;
-  label: string;
-}
+import { Field } from "../table/hook";
 
-interface ModalFormProps {
+interface ModalFormProps<T> {
+  selected?: T;
   title: string;
   open: boolean;
   setOpen: (show: boolean) => void;
+  onSubmit: any;
 }
 
-export const useModalForm = (fields: Field[]) => {
-  const ModalForm = (props: ModalFormProps) => {
-    const { title, open, setOpen } = props;
+export const useModalForm = <T extends { [key: string]: any }>(
+  fields: Field[]
+) => {
+  const ModalForm = (props: ModalFormProps<T>) => {
+    const { selected, title, open, setOpen, onSubmit } = props;
+    const { register, handleSubmit } = useForm<T>();
 
     return (
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
-          {fields.map((f) => (
-            <Box key={`modalForm_field_${f.name}`}>
-              {f.type === "input" && <TextField id={f.name} label={f.label} />}
-            </Box>
-          ))}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={() => setOpen(false)}>Submit</Button>
-        </DialogActions>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogContent>
+            {fields.map((f) => (
+              <Box key={`modalForm_field_${f.name}`}>
+                {f.type === "input" && (
+                  <TextField
+                    defaultValue={selected ? selected[f.name] : undefined}
+                    id={f.name}
+                    label={f.label}
+                    {...register(f.name as Path<T>)}
+                  />
+                )}
+              </Box>
+            ))}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button type="submit">Submit</Button>
+          </DialogActions>
+        </Box>
       </Dialog>
     );
   };

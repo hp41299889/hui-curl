@@ -12,6 +12,7 @@ export interface SiderMenuItem {
 const menuItems: SiderMenuItem[] = [
   { href: "/back", icon: <></>, text: "home" },
   { href: "/back/product", icon: <></>, text: "product" },
+  { href: "/back/attribute", icon: <></>, text: "Attribute" },
 ];
 
 const Sider = () => {
