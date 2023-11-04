@@ -4,8 +4,6 @@ import { Box, Button } from "@mui/material";
 
 import { useFetchData } from "@/app/_util/client/api/hook";
 import { getProduct } from "@/app/_util/client/api/back";
-import ProductForm from "@/app/_component/form/product";
-import ProductTable from "@/app/_component/table/product";
 import { Product } from "@prisma/client";
 
 // const fileds: Field[] = [
@@ -41,14 +39,6 @@ const Page = () => {
       >
         + Create
       </Button>
-      <ProductForm open={open} setOpen={setOpen} initValue={selectedProduct} />
-      {product !== undefined && (
-        <ProductTable
-          products={product}
-          setSelected={setSelectedProduct}
-          setOpen={setOpen}
-        />
-      )}
     </Box>
   );
 };

@@ -24,22 +24,22 @@ export const POST = async (req: NextRequest) => {
         `https://api-ap.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUDNAME}/upload`,
         imgData
       );
-      if (uploadRes.status === 200) {
-        products.push({
-          name: String(formData.get(`product[${i}][name]`)),
-          description: String(formData.get(`product[${i}][description]`)),
-          price: Number(formData.get(`product[${i}][price]`)),
-          link: uploadRes.data.secure_url,
-        });
-      }
-      const created = await prisma.product.createMany({
-        data: products,
-      });
+      // if (uploadRes.status === 200) {
+      //   products.push({
+      //     name: String(formData.get(`product[${i}][name]`)),
+      //     description: String(formData.get(`product[${i}][description]`)),
+      //     price: Number(formData.get(`product[${i}][price]`)),
+      //     link: uploadRes.data.secure_url,
+      //   });
+      // }
+      // const created = await prisma.product.createMany({
+      //   data: products,
+      // });
       r.statusCode = 201;
       r.response = {
         status: "success",
         message: "created many products success",
-        data: created,
+        data: "created",
       };
     }
   }
