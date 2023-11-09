@@ -5,7 +5,7 @@ services:
     image: postgres
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -20,4 +20,4 @@ services:
       PGADMIN_DEFAULT_EMAIL: postgres@db.com
       PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
-      - "8081:80"
+      - "8082:80"

@@ -1,8 +1,12 @@
 import {
   deleteCategory,
+  deleteSize,
   getCategory,
+  getSize,
   patchCategory,
+  patchSize,
   postCategory,
+  postSize,
 } from "@/app/_util/client/api/back";
 import { useFetchData } from "@/app/_util/client/api/hook";
 import { toLocale } from "@/app/_util/time";
@@ -26,24 +30,24 @@ import {
 import { Edit, Delete } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Category } from "@prisma/client";
+import { Category, Size } from "@prisma/client";
 
-const CategoryTable = () => {
+const SizeTable = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<Category>();
-  const [category, mutate, isLoading] = useFetchData("category", getCategory);
-  const { register, handleSubmit, reset } = useForm<Category>();
+  const [selected, setSelected] = useState<Size>();
+  const [size, mutate, isLoading] = useFetchData("size", getSize);
+  const { register, handleSubmit, reset } = useForm<Size>();
 
-  const sortedCategory = category?.sort(
+  const sortedSize = size?.sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 
-  const onSubmit = async (formValues: Category) => {
+  const onSubmit = async (formValues: Size) => {
     const { createdAt, updatedAt, ...payload } = formValues;
     if (selected) {
       try {
-        const res = await patchCategory(selected.id, payload);
+        const res = await patchSize(selected.id, payload);
         if (res.data.status === "success") {
           mutate();
           setOpen(false);
@@ -53,7 +57,7 @@ const CategoryTable = () => {
       }
     } else {
       try {
-        const res = await postCategory(payload);
+        const res = await postSize(payload);
         if (res.data.status === "success") {
           mutate();
           setOpen(false);
@@ -64,9 +68,9 @@ const CategoryTable = () => {
     }
   };
 
-  const onDelete = async (formValues: Category) => {
+  const onDelete = async (formValues: Size) => {
     try {
-      const res = await deleteCategory(formValues.id);
+      const res = await deleteSize(formValues.id);
       if (res.data.status === "success") {
         mutate();
         setDeleteOpen(false);
@@ -96,7 +100,7 @@ const CategoryTable = () => {
           >
             +Create
           </Button>
-          {sortedCategory && (
+          {sortedSize && (
             <TableContainer>
               <Table>
                 <TableHead>
@@ -108,15 +112,15 @@ const CategoryTable = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sortedCategory.map((c) => (
-                    <TableRow key={c.id}>
-                      <TableCell>{c.name}</TableCell>
-                      <TableCell>{toLocale(c.createdAt)}</TableCell>
-                      <TableCell>{toLocale(c.updatedAt)}</TableCell>
+                  {sortedSize.map((s) => (
+                    <TableRow key={s.id}>
+                      <TableCell>{s.name}</TableCell>
+                      <TableCell>{toLocale(s.createdAt)}</TableCell>
+                      <TableCell>{toLocale(s.updatedAt)}</TableCell>
                       <TableCell>
                         <IconButton
                           onClick={() => {
-                            setSelected(c);
+                            setSelected(s);
                             setOpen(true);
                           }}
                         >
@@ -124,7 +128,7 @@ const CategoryTable = () => {
                         </IconButton>
                         <IconButton
                           onClick={() => {
-                            setSelected(c);
+                            setSelected(s);
                             setDeleteOpen(true);
                           }}
                         >
@@ -140,7 +144,7 @@ const CategoryTable = () => {
         </Box>
       )}
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Category</DialogTitle>
+        <DialogTitle>Size</DialogTitle>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <TextField label="名稱" {...register("name")} />
@@ -156,7 +160,7 @@ const CategoryTable = () => {
         </Box>
       </Dialog>
       <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)}>
-        <DialogTitle>Category</DialogTitle>
+        <DialogTitle>Size</DialogTitle>
         <Box component="form" onSubmit={handleSubmit(onDelete)}>
           <DialogContent>此動作無法恢復，確定要刪除嗎?</DialogContent>
           <DialogActions>
@@ -173,4 +177,4 @@ const CategoryTable = () => {
   );
 };
 
-export default CategoryTable;
+export default SizeTable;

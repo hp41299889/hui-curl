@@ -19,7 +19,7 @@ export const useFetchData = <T,>(
   };
 
   const { data, mutate, isLoading, error } = useSWR<T>(key, fetcher, {
-    refreshInterval: config?.refreshInterval || 0,
+    refreshInterval: 5000,
   });
 
   return [data, mutate, isLoading, error];
